@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/sky/eecs/pf1/Projects/Project 3/pf1-project3'
+relocations:     []
+...

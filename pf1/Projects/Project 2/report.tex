@@ -1,0 +1,111 @@
+\documentclass[12pt, letterpaper]{article}
+\usepackage{fancyvrb} % for verbatim environment
+\usepackage{outlines}
+\usepackage{geometry}
+\usepackage{indentfirst}
+\usepackage[english]{babel}
+\usepackage{microtype}
+\usepackage{changepage}
+\geometry{margin=1in}
+\usepackage{fvextra}
+\DefineVerbatimEnvironment{MyVerbatim}{Verbatim}{
+    frame=single,
+    fontsize=\small,
+    breaklines=true,
+    xleftmargin=-.75in,
+    xrightmargin=-.75in
+}
+
+\title{\vspace{-1in}CSCE 20004 \\ Programming Foundations I \\ Programming Project 1 Report}
+\author{Skylar Miles}
+\date{August 22nd, 2025}
+\begin{document}
+\maketitle
+
+\section*{Academic Integrity Statement}
+I pledge that I have neither given nor received unauthorized help on this programming assignment. I have written this report myself in my own words.
+
+\section{Problem Statement}
+You will be designing a basic “Academic Advising System”. The student will input their major and ask if they had taken few key courses. Based on this information, the system will suggest which course(s) they should take next
+\section{Design}
+
+We start by outputting a menu asking the user for their major. We take their major as \texttt{int major}. After, we ask whether or not they've taken both Calculus I or Digital Design. We set \texttt{bool calc} or \texttt{bool digDesign} based on their choice. 
+
+We check their major in switch case. We do this to advise the student take different courses based on their major based on the flow chart. For example, a Computer Engineering student would be advised to take Discrete Math whereas a EE student would be advised to take Physics I.
+
+Since Digital Design is recommended for all three majors, we check it outside of the switch case. Finally, we end the program. However, there is no input checking besides an OR operator to check for "Y" or "y". I tried to avoid using \texttt{std::tolower(choice)}, however I found myself using "Y", and 'y' interchangibly. The I tried using an OR operator, but the if statement would fail. \texttt{std::tolower} was required to get the program to work. 
+\section{Implementation}
+I used both the flow charts and outputs in order to implement the the logic of my program. At first, I had the check for digDesign being repeated in each switch case, but I decided it was cleaner to just check once since I noticed there was no differneces for the major. I finished the program draft in less time than the prior project actually. This was because I was made aware that my previous program was over-engineered. Thus, I took a simpler approach and outside of the lack of input checking, it came out well.
+\section{Testing}
+Testing consisted of throwing in edge cases which could cause the program to fail.
+\noindent
+\begin{center}
+    \subsection*{Test resuts}
+    Computer Engineering:
+\begin{MyVerbatim}
+Select your major
+-----------------------------------
+  1. Electrical Engineering (EE)
+  2. Computer Science (CS)
+  3. Computer Engineering (CE)
+-----------------------------------
+Enter your choice (1-3): 1
+Have you taken Calculus I (Y/N): y
+Have you taken Digital Design (Y/N): n
+--- Advising ---
+You should consider taking Calculus II and Physics I
+You should take Digital Design
+\end{MyVerbatim}
+\end{center}
+\pagebreak
+\begin{center}
+    Computer Science:
+\begin{MyVerbatim}
+Select your major
+-----------------------------------
+  1. Electrical Engineering (EE)
+  2. Computer Science (CS)
+  3. Computer Engineering (CE)
+-----------------------------------
+Enter your choice (1-3): 2
+Have you taken Calculus I (Y/N): Y
+Have you taken Digital Design (Y/N): Y
+--- Advising ---
+You should consider taking Calculus II and Programming Foundations I
+To scale your recipe from 42.00 to 23.00, you will need to multiply each ingredient by 0.55
+\end{MyVerbatim}
+\end{center}
+\begin{center}
+    Computer Engineering:
+\begin{MyVerbatim}
+Select your major
+-----------------------------------
+  1. Electrical Engineering (EE)
+  2. Computer Science (CS)
+  3. Computer Engineering (CE)
+-----------------------------------
+Enter your choice (1-3): 3
+Have you taken Calculus I (Y/N): Y
+Have you taken Digital Design (Y/N): Y
+--- Advising ---
+You should consider taking Calculus II and Discrete Math
+\end{MyVerbatim}
+\end{center}
+\begin{center}
+    Failed Run:
+\begin{MyVerbatim}
+Select your major
+-----------------------------------
+  1. Electrical Engineering (EE)
+  2. Computer Science (CS)
+  3. Computer Engineering (CE)
+-----------------------------------
+Enter your choice (1-3): d
+Have you taken Calculus I (Y/N): Have you taken Digital Design (Y/N): --- Advising ---
+Error: Invalid Input
+You should take Digital Design
+\end{MyVerbatim}
+\end{center}
+\section{Conclusions}
+This project was a success! The overall result of the program is a working single-use advising system that can help EE, CS, and CE students. I would've liked to add input checking, as well, as it being multi-use by not ending as soon as the output completes. This project took approx. 2 hours to complete.
+\end{document}
