@@ -1,0 +1,14 @@
+a.out
+.DS_Store
+*.o
+*.so
+*.dylib
+*.log
+*.tmp
+*.swp
+*.bak
+*.cache
+*.vscode
+.idea/
+.claude/
+.vs/

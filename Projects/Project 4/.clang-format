@@ -1,0 +1,8 @@
+BasedOnStyle: Google
+ColumnLimit: 80
+IndentWidth: 2
+TabWidth: 2
+UseTab: Never
+BinPackArguments: false
+BinPackParameters: false
+Cpp11BracedListStyle: true
