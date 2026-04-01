@@ -1,0 +1,20 @@
+BasedOnStyle: LLVM
+
+# Indentation: 2 spaces, no hard tabs.
+IndentWidth: 2
+TabWidth: 2
+UseTab: Never
+
+# Keep lines generally within 80-120 by using a common midpoint.
+ColumnLimit: 80
+
+# Do not crunch declarations/parameters onto single lines.
+BinPackParameters: false
+AllowAllParametersOfDeclarationOnNextLine: false
+
+# Force things to expand instead of staying on one line.
+AllowShortEnumsOnASingleLine: false
+AllowShortBlocksOnASingleLine: false
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: false
+AllowShortIfStatementsOnASingleLine: false
