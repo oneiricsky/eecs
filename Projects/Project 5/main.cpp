@@ -1,81 +1,6 @@
+#include "tms.h"
+#include <fstream>
 #include <iostream>
-
-// Task 1 - Support Ticket Data Structure
-// TODO: Add constructors (default and parameterized)
-// TODO: Add destructor
-class Ticket {
-public:
-  /* Getters */
-  int getId() {
-    return id;
-  }
-  // TODO: Rename getDescription() to getCustomerName() and update usages
-  std::string getCustomerName() {
-    return customerName;
-  }
-  std::string getLevel() {
-    return level;
-  }
-  auto getDateSubmitted() {
-    return dateSubmitted;
-  }
-  int getResTime() {
-    return resTime;
-  }
-  /* Setters */
-  void setId(int newId) {
-    id = newId;
-  }
-  // TODO: Rename setDescription() to setCustomerName() and update usages
-  void setCustomerName(std::string newCustomerName) {
-    customerName = newCustomerName;
-  }
-  void setLevel(std::string newLevel) {
-    if (newLevel != "Low" && newLevel != "Medium" && newLevel != "High" &&
-        newLevel != "Urgent") {
-      std::cerr << "Invalid level. Please enter 'Low', 'Medium', or 'High', or "
-                   "'Urgent'."
-                << std::endl;
-      return;
-    }
-    level = newLevel;
-  }
-  void setDateSubmitted(int m, int d, int y) {
-    if (d < 1 || d > 31 || m < 1 || m > 12 || y < 1900) {
-      std::cerr << "Invalid date. Please enter a valid date." << std::endl;
-      return;
-    };
-    dateSubmitted = {m, d, y};
-  }
-  void setResTime(int newResTime) {
-    resTime = newResTime;
-  }
-  // TODO: Add print() method to display all ticket fields in a readable format
-
-private:
-  int id;
-  // TODO: Renamed from description to customerName per project spec
-  std::string customerName;
-  std::string level;
-  struct date {
-    int month;
-    int day;
-    int year;
-  } dateSubmitted;
-  int resTime;
-};
-
-// Task 2 - Support Ticket Operations
-// TODO: Implement loadTickets(Ticket tickets[], int &count, std::string
-//       filename) to read ticket records from an input file
-// TODO: Implement printTickets(Ticket tickets[], int count) to display all
-//       stored support records in tabular format
-// TODO: Implement addTicket(Ticket tickets[], int &count) to add a new support
-//       ticket through menu-based input
-// TODO: Implement editTicket(Ticket tickets[], int count, int ticketId) to
-//       update the details of an existing ticket by its Ticket ID
-// TODO: Implement deleteTicket(Ticket tickets[], int &count, int ticketId) to
-//       remove a ticket from the system by its Ticket ID
 
 // Task 3 - Sorting Functionalities
 // TODO: Implement first classic sorting algorithm (e.g. bubble sort or
@@ -108,21 +33,10 @@ private:
 //         0. Exit
 
 int main() {
-  Ticket t;
-  t.setId(123);
-  t.setCustomerName("John Smith");
-  t.setLevel("High");
-  t.setDateSubmitted(10, 5, 2023);
-  t.setResTime(4);
-
-  std::cout << "Ticket ID: " << t.getId() << std::endl;
-  std::cout << "Customer Name: " << t.getCustomerName() << std::endl;
-  std::cout << "Level: " << t.getLevel() << std::endl;
-  auto date = t.getDateSubmitted();
-  std::cout << "Date Submitted: " << date.month << "/" << date.day << "/"
-            << date.year << std::endl;
-  std::cout << "Resolution Time: " << t.getResTime() << " days" << std::endl;
-
+  std::fstream file("tickets.csv");
+  TMS tms;
+  tms.loadTickets(file);
+  tms.printTickets();
   // TODO: Replace the demo code above with the menu-based interface (Task 5)
 
   return 0;
