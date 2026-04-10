@@ -2,42 +2,78 @@
 #include <fstream>
 #include <iostream>
 
-// Task 3 - Sorting Functionalities
-// TODO: Implement first classic sorting algorithm (e.g. bubble sort or
-//       insertion sort) to sort tickets by:
-//         - Customer Name (ascending alphabetical order)
-//         - Priority Level (highest priority ticket first)
-// TODO: Implement second classic sorting algorithm (e.g. merge sort or
-//       quick sort) to sort tickets by:
-//         - Date Submitted (oldest ticket first)
-//         - Estimated Resolution Time (longest time first)
-
-// Task 4 - Performance Analysis
-// TODO: Add execution timer to each sort function using <chrono> and print
-//       elapsed time after each sort
-// TODO: Add a data comparison counter to each sort function (incremented only
-//       when comparing ticket attributes, not loop counters) and print the
-//       number of comparisons after each sort
-
 // Task 5 - User Interaction
-// TODO: Implement a menu-based interface in main() that lets users:
-//         1. Load ticket data from file
-//         2. Print all tickets
-//         3. Add a new ticket
-//         4. Edit an existing ticket
-//         5. Delete a ticket
-//         6. Sort by Customer Name
-//         7. Sort by Priority Level
-//         8. Sort by Date Submitted
-//         9. Sort by Estimated Resolution Time
-//         0. Exit
 
 int main() {
-  std::fstream file("tickets.csv");
   TMS tms;
-  tms.loadTickets(file);
-  tms.printTickets();
-  // TODO: Replace the demo code above with the menu-based interface (Task 5)
+  bool running = true;
+
+  while (running) {
+    std::cout << "\n=== Ticket Management System ===" << std::endl;
+    std::cout << "  1. Load ticket data from file" << std::endl;
+    std::cout << "  2. Print all tickets" << std::endl;
+    std::cout << "  3. Add a new ticket" << std::endl;
+    std::cout << "  4. Edit an existing ticket" << std::endl;
+    std::cout << "  5. Delete a ticket" << std::endl;
+    std::cout << "  6. Sort by Customer Name" << std::endl;
+    std::cout << "  7. Sort by Priority Level" << std::endl;
+    std::cout << "  8. Sort by Date Submitted" << std::endl;
+    std::cout << "  9. Sort by Estimated Resolution Time" << std::endl;
+    std::cout << "  0. Exit" << std::endl;
+    std::cout << "Enter choice: ";
+
+    int choice;
+    std::cin >> choice;
+
+    switch (choice) {
+      case 1: {
+        std::string filename;
+        std::cout << "Enter filename: ";
+        std::cin >> filename;
+        std::fstream file(filename);
+        tms.loadTickets(file);
+        break;
+      }
+      case 2:
+        tms.printTickets();
+        break;
+      case 3:
+        tms.addTicket();
+        break;
+      case 4: {
+        int ticketId;
+        std::cout << "Enter ticket ID to edit: ";
+        std::cin >> ticketId;
+        tms.editTicket(ticketId);
+        break;
+      }
+      case 5: {
+        int ticketId;
+        std::cout << "Enter ticket ID to delete: ";
+        std::cin >> ticketId;
+        tms.deleteTicket(ticketId);
+        break;
+      }
+      case 6:
+        tms.sortByName();
+        break;
+      case 7:
+        tms.sortByLevel();
+        break;
+      case 8:
+        tms.sortByDate();
+        break;
+      case 9:
+        tms.sortByResTime();
+        break;
+      case 0:
+        running = false;
+        std::cout << "Exiting..." << std::endl;
+        break;
+      default:
+        std::cout << "Invalid choice. Please try again." << std::endl;
+    }
+  }
 
   return 0;
 }

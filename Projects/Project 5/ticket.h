@@ -1,9 +1,8 @@
+#pragma once
 #include <iostream>
 #include <string>
 
 // Task 1 - Support Ticket Data Structure
-// TODO: Add constructors (default and parameterized)
-// TODO: Add destructor
 class Ticket {
 public:
   struct date {
@@ -11,6 +10,10 @@ public:
     int day;
     int year;
   };
+  Ticket();
+  Ticket(int id, const std::string &customerName, const std::string &level,
+         int m, int d, int y, int resTime);
+  ~Ticket();
   /* Getters */
   int getId();
   std::string getCustomerName();
