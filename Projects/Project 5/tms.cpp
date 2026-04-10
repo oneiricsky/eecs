@@ -243,7 +243,7 @@ void TMS::mergeByDate(int left, int mid, int right, long long &cmp) {
 
 void TMS::mergeSortByDate(int left, int right, long long &cmp) {
   if (left < right) {
-    int mid = (left + right) / 2;
+    int mid = left + (right - left) / 2;
     mergeSortByDate(left, mid, cmp);
     mergeSortByDate(mid + 1, right, cmp);
     mergeByDate(left, mid, right, cmp);
@@ -285,7 +285,7 @@ void TMS::mergeByResTime(int left, int mid, int right, long long &cmp) {
 
 void TMS::mergeSortByResTime(int left, int right, long long &cmp) {
   if (left < right) {
-    int mid = (left + right) / 2;
+    int mid = left + (right - left) / 2;
     mergeSortByResTime(left, mid, cmp);
     mergeSortByResTime(mid + 1, right, cmp);
     mergeByResTime(left, mid, right, cmp);

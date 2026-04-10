@@ -35,7 +35,9 @@ void Ticket::setLevel(std::string newLevel) {
   level = newLevel;
 }
 void Ticket::setDateSubmitted(int m, int d, int y) {
-  if (d < 1 || d > 31 || m < 1 || m > 12 || y < 1900) {
+  static const int daysInMonth[] = {0, 31, 29, 31, 30, 31, 30,
+                                     31, 31, 30, 31, 30, 31};
+  if (m < 1 || m > 12 || y < 1900 || d < 1 || d > daysInMonth[m]) {
     std::cerr << "Invalid date. Please enter a valid date." << std::endl;
     return;
   }
