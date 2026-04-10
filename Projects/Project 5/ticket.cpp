@@ -26,9 +26,9 @@ void Ticket::setCustomerName(std::string newCustomerName) {
 }
 void Ticket::setLevel(std::string newLevel) {
   if (newLevel != "Low" && newLevel != "Medium" && newLevel != "High" &&
-      newLevel != "Critical") {
+      newLevel != "Urgent") {
     std::cerr << "Invalid level. Please enter 'Low', 'Medium', 'High', or "
-                 "'Critical'."
+                 "'Urgent'."
               << std::endl;
     return;
   }

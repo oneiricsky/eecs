@@ -11,10 +11,10 @@ last_names  = ['Smith','Johnson','Williams','Brown','Jones','Garcia','Miller','D
                'Taylor','Anderson','Thomas','Jackson','White','Harris','Martin','Thompson','Lee','Walker',
                'Hall','Allen','Young','Hernandez','King','Wright','Lopez','Hill','Scott','Green',
                'Adams','Baker','Gonzalez','Nelson','Carter','Mitchell','Perez','Roberts','Turner','Phillips', 
-               'Miles', 'Lewis', 'Jobs', 'Ross', 'Gates', 'Musk', 'Zuckerberg', 'Turing', 'Lovelace'
+               'Miles', 'Lewis', 'Jobs', 'Ross', 'Gates', 'Musk', 'Zuckerberg', 'Turing', 'Lovelace',
                'Poe']
 
-levels = ['Low','Medium','High','Critical']
+levels = ['Low','Medium','High','Urgent']
 
 rows = []
 for i in range(1, 1001):
@@ -27,7 +27,7 @@ for i in range(1, 1001):
     res_time = random.randint(1, 365)   # days to resolve
     rows.append([id, name, level, month, day, year, res_time])
 
-with open('/Users/sky/eecs/Projects/Project 5/tickets.csv', 'w', newline='') as f:
+with open('tickets.csv', 'w', newline='') as f:
     w = csv.writer(f)
     w.writerow(['id','customerName','level','month','day','year','resTime'])
     w.writerows(rows)
