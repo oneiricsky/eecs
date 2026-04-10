@@ -71,7 +71,7 @@ void TMS::addTicket() {
   std::cout << "Enter customer name: ";
   std::getline(std::cin, customerName);
 
-  std::cout << "Enter level (Low/Medium/High/Critical): ";
+  std::cout << "Enter level (Low/Medium/High/Urgent): ";
   std::cin >> level;
 
   std::cout << "Enter date submitted (month day year): ";
@@ -107,7 +107,7 @@ void TMS::editTicket(int ticketId) {
         }
         case 2: {
           std::string newLevel;
-          std::cout << "Enter new level (Low/Medium/High/Critical): ";
+          std::cout << "Enter new level (Low/Medium/High/Urgent): ";
           std::cin >> newLevel;
           t.setLevel(newLevel);
           break;
@@ -152,7 +152,7 @@ void TMS::deleteTicket(int ticketId) {
 // Task 3 & 4 - Sorting with timing and comparison counting
 
 int TMS::levelToInt(const std::string &level) {
-  if (level == "Critical") return 3;
+  if (level == "Urgent") return 3;
   if (level == "High") return 2;
   if (level == "Medium") return 1;
   return 0; // Low
