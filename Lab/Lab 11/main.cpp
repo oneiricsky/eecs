@@ -159,57 +159,6 @@ void merge_sort(int data[], int low, int high) {
 }
 
 //----------------------------------------------------------------
-// Hybrid mergesort that uses insertion sort for small subarrays.
-//----------------------------------------------------------------
-void hybrid_merge_sort(int data[], int low, int high) {
-  // Check terminating condition
-  int range = high - low + 1;
-  if (range > 1) {
-    if (range <= 20) {
-      insertion_sort(data, low, high);
-      return;
-    }
-    // Divide the array and sort both halves
-    int mid = (low + high) / 2;
-    hybrid_merge_sort(data, low, mid);
-    hybrid_merge_sort(data, mid + 1, high);
-
-    // Create temporary array for merged data
-    int *copy = new int[range];
-
-    // Initialize array indices
-    int index1 = low;
-    int index2 = mid + 1;
-    int index = 0;
-
-    // Merge smallest data elements into copy array
-    while (index1 <= mid && index2 <= high) {
-      compare_counter++;
-      if (data[index1] < data[index2])
-        copy[index++] = data[index1++];
-      else
-        copy[index++] = data[index2++];
-      move_counter++;
-    }
-
-    // Copy any remaining entries from the first half
-    while (index1 <= mid)
-      copy[index++] = data[index1++];
-
-    // Copy any remaining entries from the second half
-    while (index2 <= high)
-      copy[index++] = data[index2++];
-
-    // Copy data back from the temporary array
-    for (index = 0; index < range; index++) {
-      data[low + index] = copy[index];
-      move_counter++;
-    }
-    delete[] copy;
-  }
-}
-
-//----------------------------------------------------------------
 /*
 Create a new project in your IDE and cut and paste the functions
 "create_random_data", "create_mostly_sorted_data", "insertion_sort",
@@ -273,31 +222,6 @@ int main() {
     cout << "Sorted - Compares: " << compare_counter
          << " | Moves: " << move_counter << endl;
     cout << endl;
-
-    // Hybrid
-    cout << "Hybrid Merge Sort " << endl;
-    compare_counter = 0;
-    move_counter = 0;
-    create_random_data(data.data(), i, i);
-    hybrid_merge_sort(data.data(), 0, i - 1);
-    cout << "Random - Compares: " << compare_counter
-         << " | Moves: " << move_counter << endl;
-
-    compare_counter = 0;
-    move_counter = 0;
-    create_mostly_sorted_data(data.data(), i, i / 10);
-    hybrid_merge_sort(data.data(), 0, i - 1);
-    cout << "Mostly Sorted - Compares: " << compare_counter
-         << " | Moves: " << move_counter << endl;
-
-    compare_counter = 0;
-    move_counter = 0;
-    create_mostly_sorted_data(data.data(), i, 0);
-    hybrid_merge_sort(data.data(), 0, i - 1);
-    cout << "Sorted - Compares: " << compare_counter
-         << " | Moves: " << move_counter << endl;
-    cout << endl;
-
     cout << "==================================================" << endl;
 
     // --- Quick Sort ---
