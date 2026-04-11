@@ -22,8 +22,6 @@ private:
   std::vector<Ticket> tickets;
   int levelToInt(const std::string &level);
   bool dateIsLess(const Ticket::date &a, const Ticket::date &b);
-  void mergeByDate(int left, int mid, int right, long long &cmp);
-  void mergeSortByDate(int left, int right, long long &cmp);
-  void mergeByResTime(int left, int mid, int right, long long &cmp);
-  void mergeSortByResTime(int left, int right, long long &cmp);
+  void mergeSortByDate(int low, int high, long long &cmp);
+  void mergeSortByResTime(int low, int high, long long &cmp);
 };

@@ -165,23 +165,22 @@ bool TMS::dateIsLess(const Ticket::date &a, const Ticket::date &b) {
 }
 
 // Insertion sort by Customer Name (ascending alphabetical)
+// Algorithm adapted from John Gauch's seven sorting algorithms program
 void TMS::sortByName() {
   long long comparisons = 0;
   auto start = std::chrono::high_resolution_clock::now();
 
-  for (int i = 1; i < (int)tickets.size(); ++i) {
-    Ticket key = tickets[i];
-    int j = i - 1;
-    while (j >= 0) {
+  int low = 0;
+  int high = (int)tickets.size() - 1;
+  for (int unsorted = low + 1; unsorted <= high; unsorted++) {
+    Ticket value = tickets[unsorted];
+    int posn = unsorted;
+    while ((posn > low) && (tickets[posn - 1].getCustomerName() > value.getCustomerName())) {
       ++comparisons;
-      if (tickets[j].getCustomerName() > key.getCustomerName()) {
-        tickets[j + 1] = tickets[j];
-        --j;
-      } else {
-        break;
-      }
+      tickets[posn] = tickets[posn - 1];
+      posn--;
     }
-    tickets[j + 1] = key;
+    tickets[posn] = value;
   }
 
   auto end = std::chrono::high_resolution_clock::now();
@@ -192,25 +191,24 @@ void TMS::sortByName() {
   std::cout << "Time: " << duration.count() << " microseconds" << std::endl;
 }
 
-// Insertion sort by Priority Level (highest first: Critical > High > Medium > Low)
+// Insertion sort by Priority Level (highest first: Urgent > High > Medium > Low)
+// Algorithm adapted from John Gauch's seven sorting algorithms program
 void TMS::sortByLevel() {
   long long comparisons = 0;
   auto start = std::chrono::high_resolution_clock::now();
 
-  for (int i = 1; i < (int)tickets.size(); ++i) {
-    Ticket key = tickets[i];
-    int keyLevel = levelToInt(key.getLevel());
-    int j = i - 1;
-    while (j >= 0) {
+  int low = 0;
+  int high = (int)tickets.size() - 1;
+  for (int unsorted = low + 1; unsorted <= high; unsorted++) {
+    Ticket value = tickets[unsorted];
+    int valueLevel = levelToInt(value.getLevel());
+    int posn = unsorted;
+    while ((posn > low) && (levelToInt(tickets[posn - 1].getLevel()) < valueLevel)) {
       ++comparisons;
-      if (levelToInt(tickets[j].getLevel()) < keyLevel) {
-        tickets[j + 1] = tickets[j];
-        --j;
-      } else {
-        break;
-      }
+      tickets[posn] = tickets[posn - 1];
+      posn--;
     }
-    tickets[j + 1] = key;
+    tickets[posn] = value;
   }
 
   auto end = std::chrono::high_resolution_clock::now();
@@ -222,31 +220,60 @@ void TMS::sortByLevel() {
 }
 
 // Merge sort by Date Submitted (ascending, oldest first)
-void TMS::mergeByDate(int left, int mid, int right, long long &cmp) {
-  std::vector<Ticket> leftArr(tickets.begin() + left,
-                              tickets.begin() + mid + 1);
-  std::vector<Ticket> rightArr(tickets.begin() + mid + 1,
-                               tickets.begin() + right + 1);
-  int i = 0, j = 0, k = left;
-  while (i < (int)leftArr.size() && j < (int)rightArr.size()) {
-    ++cmp;
-    if (!dateIsLess(rightArr[j].getDateSubmitted(),
-                    leftArr[i].getDateSubmitted())) {
-      tickets[k++] = leftArr[i++];
-    } else {
-      tickets[k++] = rightArr[j++];
+// Algorithm adapted from John Gauch's seven sorting algorithms program
+void TMS::mergeSortByDate(int low, int high, long long &cmp) {
+  int range = high - low + 1;
+  if (range > 1) {
+    // Use insertion sort for small sub-arrays (hybrid optimization)
+    if (range <= 20) {
+      for (int unsorted = low + 1; unsorted <= high; unsorted++) {
+        Ticket value = tickets[unsorted];
+        int posn = unsorted;
+        while ((posn > low) && dateIsLess(value.getDateSubmitted(),
+                                          tickets[posn - 1].getDateSubmitted())) {
+          ++cmp;
+          tickets[posn] = tickets[posn - 1];
+          posn--;
+        }
+        tickets[posn] = value;
+      }
+      return;
     }
-  }
-  while (i < (int)leftArr.size()) tickets[k++] = leftArr[i++];
-  while (j < (int)rightArr.size()) tickets[k++] = rightArr[j++];
-}
 
-void TMS::mergeSortByDate(int left, int right, long long &cmp) {
-  if (left < right) {
-    int mid = left + (right - left) / 2;
-    mergeSortByDate(left, mid, cmp);
-    mergeSortByDate(mid + 1, right, cmp);
-    mergeByDate(left, mid, right, cmp);
+    // Divide the array and sort both halves
+    int mid = (low + high) / 2;
+    mergeSortByDate(low, mid, cmp);
+    mergeSortByDate(mid + 1, high, cmp);
+
+    // Create temporary array for merged data
+    std::vector<Ticket> copy(range);
+
+    // Initialize array indices
+    int index1 = low;
+    int index2 = mid + 1;
+    int index = 0;
+
+    // Merge smallest data elements into copy array
+    while (index1 <= mid && index2 <= high) {
+      ++cmp;
+      if (!dateIsLess(tickets[index2].getDateSubmitted(),
+                      tickets[index1].getDateSubmitted()))
+        copy[index++] = tickets[index1++];
+      else
+        copy[index++] = tickets[index2++];
+    }
+
+    // Copy any remaining entries from the first half
+    while (index1 <= mid)
+      copy[index++] = tickets[index1++];
+
+    // Copy any remaining entries from the second half
+    while (index2 <= high)
+      copy[index++] = tickets[index2++];
+
+    // Copy data back from the temporary array
+    for (index = 0; index < range; index++)
+      tickets[low + index] = copy[index];
   }
 }
 
@@ -265,30 +292,58 @@ void TMS::sortByDate() {
 }
 
 // Merge sort by Resolution Time (descending, longest first)
-void TMS::mergeByResTime(int left, int mid, int right, long long &cmp) {
-  std::vector<Ticket> leftArr(tickets.begin() + left,
-                              tickets.begin() + mid + 1);
-  std::vector<Ticket> rightArr(tickets.begin() + mid + 1,
-                               tickets.begin() + right + 1);
-  int i = 0, j = 0, k = left;
-  while (i < (int)leftArr.size() && j < (int)rightArr.size()) {
-    ++cmp;
-    if (leftArr[i].getResTime() >= rightArr[j].getResTime()) {
-      tickets[k++] = leftArr[i++];
-    } else {
-      tickets[k++] = rightArr[j++];
+// Algorithm adapted from John Gauch's seven sorting algorithms program
+void TMS::mergeSortByResTime(int low, int high, long long &cmp) {
+  int range = high - low + 1;
+  if (range > 1) {
+    // Use insertion sort for small sub-arrays (hybrid optimization)
+    if (range <= 20) {
+      for (int unsorted = low + 1; unsorted <= high; unsorted++) {
+        Ticket value = tickets[unsorted];
+        int posn = unsorted;
+        while ((posn > low) && (tickets[posn - 1].getResTime() < value.getResTime())) {
+          ++cmp;
+          tickets[posn] = tickets[posn - 1];
+          posn--;
+        }
+        tickets[posn] = value;
+      }
+      return;
     }
-  }
-  while (i < (int)leftArr.size()) tickets[k++] = leftArr[i++];
-  while (j < (int)rightArr.size()) tickets[k++] = rightArr[j++];
-}
 
-void TMS::mergeSortByResTime(int left, int right, long long &cmp) {
-  if (left < right) {
-    int mid = left + (right - left) / 2;
-    mergeSortByResTime(left, mid, cmp);
-    mergeSortByResTime(mid + 1, right, cmp);
-    mergeByResTime(left, mid, right, cmp);
+    // Divide the array and sort both halves
+    int mid = (low + high) / 2;
+    mergeSortByResTime(low, mid, cmp);
+    mergeSortByResTime(mid + 1, high, cmp);
+
+    // Create temporary array for merged data
+    std::vector<Ticket> copy(range);
+
+    // Initialize array indices
+    int index1 = low;
+    int index2 = mid + 1;
+    int index = 0;
+
+    // Merge largest data elements into copy array (descending)
+    while (index1 <= mid && index2 <= high) {
+      ++cmp;
+      if (tickets[index1].getResTime() >= tickets[index2].getResTime())
+        copy[index++] = tickets[index1++];
+      else
+        copy[index++] = tickets[index2++];
+    }
+
+    // Copy any remaining entries from the first half
+    while (index1 <= mid)
+      copy[index++] = tickets[index1++];
+
+    // Copy any remaining entries from the second half
+    while (index2 <= high)
+      copy[index++] = tickets[index2++];
+
+    // Copy data back from the temporary array
+    for (index = 0; index < range; index++)
+      tickets[low + index] = copy[index];
   }
 }
 
