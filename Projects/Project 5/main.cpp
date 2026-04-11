@@ -7,31 +7,27 @@
 #include <string>
 #include <vector>
 
-class TMS {
-public:
-  // Task 2 - Support Ticket Operations
-  void loadTickets(std::fstream &file);
-  void printTickets();
-  void addTicket();
-  void editTicket(int ticketId);
-  void deleteTicket(int ticketId);
-  // Task 3 - Sorting Functionalities
-  void sortByName();    // insertion sort, ascending alphabetical
-  void sortByLevel();   // insertion sort, highest priority first
-  void sortByDate();    // merge sort, oldest first
-  void sortByResTime(); // merge sort, longest time first
+// Task 2 - Support Ticket Operations
+std::vector<Ticket> tickets;
 
-private:
-  std::vector<Ticket> tickets;
-  int levelToInt(const std::string &level);
-  bool dateIsLess(const Ticket::date &a, const Ticket::date &b);
-  void mergeSortByDate(int low, int high, long long &cmp);
-  void mergeSortByResTime(int low, int high, long long &cmp);
-};
+void loadTickets(std::fstream &file);
+void printTickets();
+void addTicket();
+void editTicket(int ticketId);
+void deleteTicket(int ticketId);
+// Task 3 - Sorting Functionalities
+void sortByName();    // insertion sort, ascending alphabetical
+void sortByLevel();   // insertion sort, highest priority first
+void sortByDate();    // merge sort, oldest first
+void sortByResTime(); // merge sort, longest time first
+int levelToInt(const std::string &level);
+bool dateIsLess(const Ticket::date &a, const Ticket::date &b);
+void mergeSortByDate(int low, int high, long long &cmp);
+void mergeSortByResTime(int low, int high, long long &cmp);
 
 // Task 2 - Support Ticket Operations
 
-void TMS::loadTickets(std::fstream &file) {
+void loadTickets(std::fstream &file) {
   if (!file.is_open()) {
     std::cerr << "Error opening file." << std::endl;
     return;
@@ -61,7 +57,7 @@ void TMS::loadTickets(std::fstream &file) {
   std::cout << "Loaded " << tickets.size() << " tickets." << std::endl;
 }
 
-void TMS::printTickets() {
+void printTickets() {
   if (tickets.empty()) {
     std::cout << "No tickets to display." << std::endl;
     return;
@@ -81,7 +77,7 @@ void TMS::printTickets() {
   std::cout << "Total: " << tickets.size() << " tickets." << std::endl;
 }
 
-void TMS::addTicket() {
+void addTicket() {
   // Generate new ID as max existing ID + 1
   int maxId = 10000;
   for (auto &t : tickets) {
@@ -109,7 +105,7 @@ void TMS::addTicket() {
   std::cout << "Ticket " << id << " added successfully." << std::endl;
 }
 
-void TMS::editTicket(int ticketId) {
+void editTicket(int ticketId) {
   for (auto &t : tickets) {
     if (t.getId() == ticketId) {
       std::cout << "Current ticket details:" << std::endl;
@@ -162,7 +158,7 @@ void TMS::editTicket(int ticketId) {
   std::cout << "Ticket with ID " << ticketId << " not found." << std::endl;
 }
 
-void TMS::deleteTicket(int ticketId) {
+void deleteTicket(int ticketId) {
   for (auto it = tickets.begin(); it != tickets.end(); ++it) {
     if (it->getId() == ticketId) {
       tickets.erase(it);
@@ -176,14 +172,14 @@ void TMS::deleteTicket(int ticketId) {
 
 // Task 3 & 4 - Sorting with timing and comparison counting
 
-int TMS::levelToInt(const std::string &level) {
+int levelToInt(const std::string &level) {
   if (level == "Urgent") return 3;
   if (level == "High") return 2;
   if (level == "Medium") return 1;
   return 0; // Low
 }
 
-bool TMS::dateIsLess(const Ticket::date &a, const Ticket::date &b) {
+bool dateIsLess(const Ticket::date &a, const Ticket::date &b) {
   if (a.year != b.year) return a.year < b.year;
   if (a.month != b.month) return a.month < b.month;
   return a.day < b.day;
@@ -191,7 +187,7 @@ bool TMS::dateIsLess(const Ticket::date &a, const Ticket::date &b) {
 
 // Insertion sort by Customer Name (ascending alphabetical)
 // Algorithm adapted from John Gauch's seven sorting algorithms program
-void TMS::sortByName() {
+void sortByName() {
   long long comparisons = 0;
   auto start = std::chrono::high_resolution_clock::now();
 
@@ -218,7 +214,7 @@ void TMS::sortByName() {
 
 // Insertion sort by Priority Level (highest first: Urgent > High > Medium > Low)
 // Algorithm adapted from John Gauch's seven sorting algorithms program
-void TMS::sortByLevel() {
+void sortByLevel() {
   long long comparisons = 0;
   auto start = std::chrono::high_resolution_clock::now();
 
@@ -246,7 +242,7 @@ void TMS::sortByLevel() {
 
 // Merge sort by Date Submitted (ascending, oldest first)
 // Algorithm adapted from John Gauch's seven sorting algorithms program
-void TMS::mergeSortByDate(int low, int high, long long &cmp) {
+void mergeSortByDate(int low, int high, long long &cmp) {
   int range = high - low + 1;
   if (range > 1) {
     // Use insertion sort for small sub-arrays (hybrid optimization)
@@ -302,7 +298,7 @@ void TMS::mergeSortByDate(int low, int high, long long &cmp) {
   }
 }
 
-void TMS::sortByDate() {
+void sortByDate() {
   long long comparisons = 0;
   auto start = std::chrono::high_resolution_clock::now();
 
@@ -318,7 +314,7 @@ void TMS::sortByDate() {
 
 // Merge sort by Resolution Time (descending, longest first)
 // Algorithm adapted from John Gauch's seven sorting algorithms program
-void TMS::mergeSortByResTime(int low, int high, long long &cmp) {
+void mergeSortByResTime(int low, int high, long long &cmp) {
   int range = high - low + 1;
   if (range > 1) {
     // Use insertion sort for small sub-arrays (hybrid optimization)
@@ -372,7 +368,7 @@ void TMS::mergeSortByResTime(int low, int high, long long &cmp) {
   }
 }
 
-void TMS::sortByResTime() {
+void sortByResTime() {
   long long comparisons = 0;
   auto start = std::chrono::high_resolution_clock::now();
 
@@ -389,7 +385,6 @@ void TMS::sortByResTime() {
 // Task 5 - User Interaction
 
 int main() {
-  TMS tms;
   bool running = true;
 
   while (running) {
@@ -415,40 +410,40 @@ int main() {
         std::cout << "Enter filename: ";
         std::cin >> filename;
         std::fstream file(filename);
-        tms.loadTickets(file);
+        loadTickets(file);
         break;
       }
       case 2:
-        tms.printTickets();
+        printTickets();
         break;
       case 3:
-        tms.addTicket();
+        addTicket();
         break;
       case 4: {
         int ticketId;
         std::cout << "Enter ticket ID to edit: ";
         std::cin >> ticketId;
-        tms.editTicket(ticketId);
+        editTicket(ticketId);
         break;
       }
       case 5: {
         int ticketId;
         std::cout << "Enter ticket ID to delete: ";
         std::cin >> ticketId;
-        tms.deleteTicket(ticketId);
+        deleteTicket(ticketId);
         break;
       }
       case 6:
-        tms.sortByName();
+        sortByName();
         break;
       case 7:
-        tms.sortByLevel();
+        sortByLevel();
         break;
       case 8:
-        tms.sortByDate();
+        sortByDate();
         break;
       case 9:
-        tms.sortByResTime();
+        sortByResTime();
         break;
       case 0:
         running = false;
