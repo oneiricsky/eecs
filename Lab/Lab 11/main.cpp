@@ -118,10 +118,6 @@ void merge_sort(int data[], int low, int high) {
   // Check terminating condition
   int range = high - low + 1;
   if (range > 1) {
-    if (range <= 20) {
-      insertion_sort(data, low, high);
-      return;
-    }
     // Divide the array and sort both halves
     int mid = (low + high) / 2;
     merge_sort(data, low, mid);
@@ -226,31 +222,6 @@ int main() {
     cout << "Sorted - Compares: " << compare_counter
          << " | Moves: " << move_counter << endl;
     cout << endl;
-
-    // Hybrid
-    cout << "Hybrid Merge Sort " << endl;
-    compare_counter = 0;
-    move_counter = 0;
-    create_random_data(data.data(), i, i);
-    merge_sort(data.data(), 0, i - 1);
-    cout << "Random - Compares: " << compare_counter
-         << " | Moves: " << move_counter << endl;
-
-    compare_counter = 0;
-    move_counter = 0;
-    create_mostly_sorted_data(data.data(), i, i / 10);
-    merge_sort(data.data(), 0, i - 1);
-    cout << "Mostly Sorted - Compares: " << compare_counter
-         << " | Moves: " << move_counter << endl;
-
-    compare_counter = 0;
-    move_counter = 0;
-    create_mostly_sorted_data(data.data(), i, 0);
-    merge_sort(data.data(), 0, i - 1);
-    cout << "Sorted - Compares: " << compare_counter
-         << " | Moves: " << move_counter << endl;
-    cout << endl;
-
     cout << "==================================================" << endl;
 
     // --- Quick Sort ---

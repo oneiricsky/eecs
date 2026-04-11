@@ -253,23 +253,6 @@ void sortByLevel() {
 void mergeSortByDate(int low, int high, long long &cmp) {
   int range = high - low + 1;
   if (range > 1) {
-    // Use insertion sort for small sub-arrays (hybrid optimization)
-    if (range <= 20) {
-      for (int unsorted = low + 1; unsorted <= high; unsorted++) {
-        Ticket value = tickets[unsorted];
-        int posn = unsorted;
-        while ((posn > low) &&
-               dateIsLess(value.getDateSubmitted(),
-                          tickets[posn - 1].getDateSubmitted())) {
-          ++cmp;
-          tickets[posn] = tickets[posn - 1];
-          posn--;
-        }
-        tickets[posn] = value;
-      }
-      return;
-    }
-
     // Divide the array and sort both halves
     int mid = (low + high) / 2;
     mergeSortByDate(low, mid, cmp);
@@ -325,22 +308,6 @@ void sortByDate() {
 void mergeSortByResTime(int low, int high, long long &cmp) {
   int range = high - low + 1;
   if (range > 1) {
-    // Use insertion sort for small sub-arrays (hybrid optimization)
-    if (range <= 20) {
-      for (int unsorted = low + 1; unsorted <= high; unsorted++) {
-        Ticket value = tickets[unsorted];
-        int posn = unsorted;
-        while ((posn > low) &&
-               (tickets[posn - 1].getResTime() < value.getResTime())) {
-          ++cmp;
-          tickets[posn] = tickets[posn - 1];
-          posn--;
-        }
-        tickets[posn] = value;
-      }
-      return;
-    }
-
     // Divide the array and sort both halves
     int mid = (low + high) / 2;
     mergeSortByResTime(low, mid, cmp);
