@@ -1,5 +1,5 @@
 #include "ticket.h"
-#include <chrono>
+#include <ctime>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -197,7 +197,7 @@ bool dateIsLess(const Ticket::date &a, const Ticket::date &b) {
 // Insertion sort by Customer Name (ascending alphabetical)
 void sortByName() {
   long long comparisons = 0;
-  auto start = std::chrono::high_resolution_clock::now();
+  clock_t time1 = clock();
 
   int low = 0;
   int high = (int)tickets.size() - 1;
@@ -213,19 +213,18 @@ void sortByName() {
     tickets[posn] = value;
   }
 
-  auto end = std::chrono::high_resolution_clock::now();
-  auto duration =
-      std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+  clock_t time2 = clock();
+  double duration = (double)(time2 - time1) / CLOCKS_PER_SEC * 1000;
   std::cout << "Sorted by Customer Name (ascending)." << std::endl;
   std::cout << "Comparisons: " << comparisons << std::endl;
-  std::cout << "Time: " << duration.count() << " microseconds" << std::endl;
+  std::cout << "Time: " << duration << " milliseconds" << std::endl;
 }
 
 // Insertion sort by Priority Level (highest first: Urgent > High > Medium >
 // Low) Algorithm adapted from John Gauch's seven sorting algorithms program
 void sortByLevel() {
   long long comparisons = 0;
-  auto start = std::chrono::high_resolution_clock::now();
+  clock_t time1 = clock();
 
   int low = 0;
   int high = (int)tickets.size() - 1;
@@ -242,12 +241,11 @@ void sortByLevel() {
     tickets[posn] = value;
   }
 
-  auto end = std::chrono::high_resolution_clock::now();
-  auto duration =
-      std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+  clock_t time2 = clock();
+  double duration = (double)(time2 - time1) / CLOCKS_PER_SEC * 1000;
   std::cout << "Sorted by Priority Level (highest first)." << std::endl;
   std::cout << "Comparisons: " << comparisons << std::endl;
-  std::cout << "Time: " << duration.count() << " microseconds" << std::endl;
+  std::cout << "Time: " << duration << " milliseconds" << std::endl;
 }
 
 // Merge sort by Date Submitted (ascending, oldest first)
@@ -311,16 +309,15 @@ void mergeSortByDate(int low, int high, long long &cmp) {
 
 void sortByDate() {
   long long comparisons = 0;
-  auto start = std::chrono::high_resolution_clock::now();
+  clock_t time1 = clock();
 
   mergeSortByDate(0, (int)tickets.size() - 1, comparisons);
 
-  auto end = std::chrono::high_resolution_clock::now();
-  auto duration =
-      std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+  clock_t time2 = clock();
+  double duration = (double)(time2 - time1) / CLOCKS_PER_SEC * 1000;
   std::cout << "Sorted by Date Submitted (oldest first)." << std::endl;
   std::cout << "Comparisons: " << comparisons << std::endl;
-  std::cout << "Time: " << duration.count() << " microseconds" << std::endl;
+  std::cout << "Time: " << duration << " milliseconds" << std::endl;
 }
 
 // Merge sort by Resolution Time (descending, longest first)
@@ -382,16 +379,15 @@ void mergeSortByResTime(int low, int high, long long &cmp) {
 
 void sortByResTime() {
   long long comparisons = 0;
-  auto start = std::chrono::high_resolution_clock::now();
+  clock_t time1 = clock();
 
   mergeSortByResTime(0, (int)tickets.size() - 1, comparisons);
 
-  auto end = std::chrono::high_resolution_clock::now();
-  auto duration =
-      std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+  clock_t time2 = clock();
+  double duration = (double)(time2 - time1) / CLOCKS_PER_SEC * 1000;
   std::cout << "Sorted by Resolution Time (longest first)." << std::endl;
   std::cout << "Comparisons: " << comparisons << std::endl;
-  std::cout << "Time: " << duration.count() << " microseconds" << std::endl;
+  std::cout << "Time: " << duration << " milliseconds" << std::endl;
 }
 
 // Task 5 - User Interaction
